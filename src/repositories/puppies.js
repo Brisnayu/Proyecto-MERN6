@@ -15,6 +15,32 @@ const getAllPuppiesFromDB = async (filter) => {
   return puppies;
 };
 
+const getPuppyByIdFromDB = async (id) => {
+  const puppies = await Puppy.findById(id);
+  return puppies;
+};
+
+const createPuppyInDB = async (payload) => {
+  const newPuppy = new Puppy(payload);
+  await newPuppy.save();
+
+  console.log("Estoy llegando hasta FROM DB");
+  return newPuppy;
+};
+
+const updatePuppyByIdInDB = async (id, payload) => {
+  const puppy = await Puppy.findByIdAndUpdate(id, payload, { new: true });
+  return puppy;
+};
+
+const deletePuppyByIdInDB = async (id) => {
+  await Puppy.deleteOne({ _id: id });
+};
+
 module.exports = {
   getAllPuppiesFromDB,
+  getPuppyByIdFromDB,
+  createPuppyInDB,
+  updatePuppyByIdInDB,
+  deletePuppyByIdInDB,
 };

@@ -6,20 +6,22 @@ const responsiblePerson = new mongoose.Schema(
     surname: { type: String, required: true, trim: true },
     avatar: { type: String, required: true, trim: true },
     age: { type: Number, required: true, trim: true },
-    responsiblePet: [
-      {
-        type: mongoose.Types.ObjectId,
-        //   required: true,
-        trim: true,
-        ref: "kittens",
-      },
-      {
-        type: mongoose.Types.ObjectId,
-        //   required: true,
-        trim: true,
-        ref: "puppies",
-      },
-    ],
+    pets: {
+      puppies: [
+        {
+          type: mongoose.Types.ObjectId,
+          //   required: true,
+          ref: "Puppy",
+        },
+      ],
+      kittens: [
+        {
+          type: mongoose.Types.ObjectId,
+          //   required: true,
+          ref: "Kitten",
+        },
+      ],
+    },
   },
   {
     collection: "responsiblePerson",
