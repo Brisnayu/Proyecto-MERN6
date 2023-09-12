@@ -1,7 +1,6 @@
 const ResponsiblePerson = require("../models/responsiblePerson");
 
 const getAllResponsiblePersonsFromDB = async () => {
-  console.log("Estoy llegando hasta el repositorio de puppies");
   const responsiblePersons = await ResponsiblePerson.find()
     .populate("puppy")
     .populate("kitten");

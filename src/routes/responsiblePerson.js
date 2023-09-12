@@ -15,10 +15,8 @@ responsiblePersonRouters.put("/:id", updateResponsiblePerson);
 responsiblePersonRouters.delete("/:id", deleteResponsiblePerson);
 
 responsiblePersonRouters.get("/populate/:id", async (req, res) => {
-  console.log(req.params);
   try {
     const { id } = req.params;
-    console.log("intenta pasar por aquí");
     const person = await ResponsiblePerson.findById(id)
       .populate("pets.puppies")
       .populate("pets.kittens");

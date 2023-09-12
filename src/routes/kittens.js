@@ -1,21 +1,18 @@
 const express = require("express");
-const Kitten = require("../models/kitten");
+const {
+  getAllKittens,
+  getKittenById,
+  createKitten,
+  updateKittenById,
+  deleteKittenById,
+} = require("../controllers/kittens");
 
-const router = express.Router();
+const kittensRouters = express.Router();
 
-router.get("/kittens", async (req, res) => {
-  const { filter } = req.query;
+kittensRouters.get("/", getAllKittens);
+kittensRouters.get("/:id", getKittenById);
+kittensRouters.post("/", createKitten);
+kittensRouters.put("/:id", updateKittenById);
+kittensRouters.delete("/:id", deleteKittenById);
 
-  const filterOptions = {
-    $or: [
-      { name: { $regex: new RegExp(filter, "i") } },
-      { race: { $regex: new RegExp(filter, "i") } },
-      { color: { $regex: new RegExp(filter, "i") } },
-      { responsiblePerson: { $regex: new RegExp(filter, "i") } },
-    ],
-  };
-
-  const kittens = await Kitten.find(filter ? filterOptions : {});
-
-  res.status(200).json({ data: kittens });
-});
+module.exports = kittensRouters;

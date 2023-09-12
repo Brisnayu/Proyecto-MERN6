@@ -4,6 +4,7 @@ const { connectDB } = require("./config/db");
 
 const responsiblePersonRouters = require("./routes/responsiblePerson");
 const puppiesRouters = require("./routes/puppies");
+const kittensRouters = require("./routes/kittens");
 // const mainRouter = require("./routes");
 
 const app = express();
@@ -13,6 +14,7 @@ connectDB();
 
 app.use("/api/v1/responsiblepersons", responsiblePersonRouters);
 app.use("/api/v1/puppies", puppiesRouters);
+app.use("/api/v1/kittens", kittensRouters);
 
 const PORT = 4001;
 

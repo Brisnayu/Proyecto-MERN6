@@ -21,7 +21,6 @@ const reloadResponsiblePerson = async (req, res) => {
 const getAllResponsiblePersons = async (req, res) => {
   const responsiblePersons = await getAllResponsiblePersonsFromDB();
 
-  console.log("Estoy llegando hasta controllers puppies 😀");
   res.status(200).json({ data: responsiblePersons });
 };
 
