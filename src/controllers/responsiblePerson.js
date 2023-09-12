@@ -16,3 +16,5 @@ const reloadResponsiblePerson = async (req, res) => {
 module.exports = {
   reloadResponsiblePerson,
 };
+
+// pdte resto de funcionalidad
