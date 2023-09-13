@@ -8,9 +8,16 @@ const getAllResponsiblePersonsFromDB = async () => {
 };
 
 const updateResponsiblePersonFromDB = async (id, payload) => {
-  const responsiblePerson = await ResponsiblePerson.findByIdAndUpdate(id, payload, {
-    new: true,
-  });
+  const responsiblePerson = await ResponsiblePerson.findByIdAndUpdate(
+    id,
+    {
+      $addToSet: {
+        "pets.puppies": { $each: payload.pets.puppies },
+        "pets.kittens": { $each: payload.pets.kittens },
+      },
+    },
+    { new: true },
+  );
   return responsiblePerson;
 };
 

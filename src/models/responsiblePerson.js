@@ -10,14 +10,12 @@ const responsiblePerson = new mongoose.Schema(
       puppies: [
         {
           type: mongoose.Types.ObjectId,
-          //   required: true,
           ref: "Puppy",
         },
       ],
       kittens: [
         {
           type: mongoose.Types.ObjectId,
-          //   required: true,
           ref: "Kitten",
         },
       ],

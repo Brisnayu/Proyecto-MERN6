@@ -2,8 +2,8 @@ const responsiblePersonData = require("../data/mock-responsiblePerson");
 const ResponsiblePerson = require("../models/responsiblePerson");
 const {
   getAllResponsiblePersonsFromDB,
-  updateResponsiblePersonFromDB,
   deleteResponsiblePersonByIdFromDB,
+  updateResponsiblePersonFromDB,
 } = require("../repositories/responsiblePersons");
 
 const reloadResponsiblePerson = async (req, res) => {
@@ -25,13 +25,20 @@ const getAllResponsiblePersons = async (req, res) => {
 };
 
 const updateResponsiblePerson = async (req, res) => {
-  const { id } = req.params;
-  const newResponsiblePerson = new ResponsiblePerson(req.body);
+  try {
+    const { id } = req.params;
+    const newPerson = req.body;
 
-  newResponsiblePerson._id = id;
+    const updateResponsiblePerson = await updateResponsiblePersonFromDB(id, newPerson);
 
-  const updatePerson = await updateResponsiblePersonFromDB(id, newResponsiblePerson);
-  return res.status(200).json({ data: updatePerson });
+    if (!updateResponsiblePerson) {
+      return res.status(404).json({ data: "Id inválido! ❌" });
+    }
+
+    return res.status(200).json({ data: updateResponsiblePerson });
+  } catch (error) {
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
 };
 
 const deleteResponsiblePerson = async (req, res) => {
