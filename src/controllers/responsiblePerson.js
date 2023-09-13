@@ -2,8 +2,10 @@ const responsiblePersonData = require("../data/mock-responsiblePerson");
 const ResponsiblePerson = require("../models/responsiblePerson");
 const {
   getAllResponsiblePersonsFromDB,
-  deleteResponsiblePersonByIdFromDB,
+  getResponsiblePersonByIdFromDB,
+  createPersonInDB,
   updateResponsiblePersonFromDB,
+  deleteResponsiblePersonByIdFromDB,
 } = require("../repositories/responsiblePersons");
 
 const reloadResponsiblePerson = async (req, res) => {
@@ -22,6 +24,27 @@ const getAllResponsiblePersons = async (req, res) => {
   const responsiblePersons = await getAllResponsiblePersonsFromDB();
 
   res.status(200).json({ data: responsiblePersons });
+};
+
+const getResponsiblePersonById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const responsiblePerson = await getResponsiblePersonByIdFromDB(id);
+    res.status(200).json({ data: responsiblePerson });
+  } catch (error) {
+    res.status(404).json({ data: error });
+  }
+};
+
+const createNewResponsiblePerson = async (req, res) => {
+  try {
+    const newPerson = await createPersonInDB(req.body);
+    res.status(200).json({ data: newPerson });
+  } catch (error) {
+    console.log("Lo siento! El nuevo cuidador no se ha creado correctamente 😿", error);
+    res.status(500).json({ data: error.message });
+  }
 };
 
 const updateResponsiblePerson = async (req, res) => {
@@ -50,6 +73,8 @@ const deleteResponsiblePerson = async (req, res) => {
 module.exports = {
   reloadResponsiblePerson,
   getAllResponsiblePersons,
+  getResponsiblePersonById,
+  createNewResponsiblePerson,
   updateResponsiblePerson,
   deleteResponsiblePerson,
 };

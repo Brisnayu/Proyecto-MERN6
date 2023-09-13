@@ -41,10 +41,8 @@ const createPuppy = async (req, res) => {
 
 const updatePuppyById = async (req, res) => {
   const { id } = req.params;
-  const newPuppy = new Puppy(req.body);
-  newPuppy._id = id;
 
-  const updateKitten = await updatePetByIdInDB(id, newPuppy, Model);
+  const updateKitten = await updatePetByIdInDB(id, req.body, Model);
   return res.status(200).json({ data: updateKitten });
 };
 

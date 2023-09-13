@@ -7,6 +7,7 @@ const kittenSchema = new mongoose.Schema(
     race: { type: String, required: true, trim: true },
     color: { type: String, required: true, trim: true },
     age: { type: Number, required: true, trim: true },
+    responsiblePerson: { type: mongoose.Types.ObjectId, ref: "ResponsiblePerson" },
   },
   { collection: "kittens" },
 );

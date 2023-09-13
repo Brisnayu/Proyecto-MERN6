@@ -2,6 +2,8 @@ const express = require("express");
 const {
   reloadResponsiblePerson,
   getAllResponsiblePersons,
+  getResponsiblePersonById,
+  createNewResponsiblePerson,
   updateResponsiblePerson,
   deleteResponsiblePerson,
 } = require("../controllers/responsiblePerson");
@@ -11,6 +13,8 @@ const responsiblePersonRouters = express.Router();
 
 responsiblePersonRouters.post("/reload", reloadResponsiblePerson);
 responsiblePersonRouters.get("/", getAllResponsiblePersons);
+responsiblePersonRouters.get("/:id", getResponsiblePersonById);
+responsiblePersonRouters.post("/", createNewResponsiblePerson);
 responsiblePersonRouters.put("/:id", updateResponsiblePerson);
 responsiblePersonRouters.delete("/:id", deleteResponsiblePerson);
 

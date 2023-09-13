@@ -7,6 +7,18 @@ const getAllResponsiblePersonsFromDB = async () => {
   return responsiblePersons;
 };
 
+const getResponsiblePersonByIdFromDB = async (id) => {
+  const responsiblePerson = await ResponsiblePerson.findById(id);
+  return responsiblePerson;
+};
+
+const createPersonInDB = async (payload) => {
+  const newPerson = new ResponsiblePerson(payload);
+  await newPerson.save();
+
+  return newPerson;
+};
+
 const updateResponsiblePersonFromDB = async (id, payload) => {
   const responsiblePerson = await ResponsiblePerson.findByIdAndUpdate(
     id,
@@ -27,6 +39,8 @@ const deleteResponsiblePersonByIdFromDB = async (id) => {
 
 module.exports = {
   getAllResponsiblePersonsFromDB,
+  getResponsiblePersonByIdFromDB,
+  createPersonInDB,
   updateResponsiblePersonFromDB,
   deleteResponsiblePersonByIdFromDB,
 };

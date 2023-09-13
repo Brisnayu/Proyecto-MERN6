@@ -27,4 +27,17 @@ puppiesRouters.post("/reload", async (req, res) => {
   }
 });
 
+// puppiesRouters.get("/populate/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const puppy = await Puppy.findById(id).populate({
+//       path: "responsiblePerson",
+//       select: "name surname avatar age",
+//     });
+//     return res.status(200).json(puppy);
+//   } catch (error) {
+//     return res.status(400).json("error", error);
+//   }
+// });
+
 module.exports = puppiesRouters;
