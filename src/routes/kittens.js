@@ -5,10 +5,12 @@ const {
   createKitten,
   updateKittenById,
   deleteKittenById,
+  reloadKittens,
 } = require("../controllers/kittens");
 
 const kittensRouters = express.Router();
 
+kittensRouters.post("/reload", reloadKittens);
 kittensRouters.get("/", getAllKittens);
 kittensRouters.get("/:id", getKittenById);
 kittensRouters.post("/", createKitten);

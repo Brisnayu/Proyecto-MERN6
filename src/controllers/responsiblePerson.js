@@ -5,6 +5,7 @@ const {
   getResponsiblePersonByIdFromDB,
   createPersonInDB,
   updateResponsiblePersonFromDB,
+  updatePetFromResponsiblePersonFromDB,
   deleteResponsiblePersonByIdFromDB,
 } = require("../repositories/responsiblePersons");
 
@@ -16,43 +17,61 @@ const reloadResponsiblePerson = async (req, res) => {
     );
     return res.status(200).json({ data: newResponsiblePersons });
   } catch (error) {
-    console.log("Algo no ha salido bien");
+    return res.status(500).json({ data: error.message });
   }
 };
 
 const getAllResponsiblePersons = async (req, res) => {
-  const responsiblePersons = await getAllResponsiblePersonsFromDB();
-
-  res.status(200).json({ data: responsiblePersons });
+  try {
+    const responsiblePersons = await getAllResponsiblePersonsFromDB(ResponsiblePerson);
+    return res.status(200).json({ data: responsiblePersons });
+  } catch (error) {
+    return res.status(500).json({ data: error.message });
+  }
 };
 
 const getResponsiblePersonById = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const responsiblePerson = await getResponsiblePersonByIdFromDB(id);
-    res.status(200).json({ data: responsiblePerson });
+    const { id } = req.params;
+    const responsiblePerson = await getResponsiblePersonByIdFromDB(id, ResponsiblePerson);
+    return res.status(200).json({ data: responsiblePerson });
   } catch (error) {
-    res.status(404).json({ data: error });
+    return res.status(404).json({ data: error });
   }
 };
 
 const createNewResponsiblePerson = async (req, res) => {
   try {
-    const newPerson = await createPersonInDB(req.body);
-    res.status(200).json({ data: newPerson });
+    const newPerson = await createPersonInDB(req.body, ResponsiblePerson);
+    return res.status(200).json({ data: newPerson });
   } catch (error) {
     console.log("Lo siento! El nuevo cuidador no se ha creado correctamente 😿", error);
-    res.status(500).json({ data: error.message });
+    return res.status(500).json({ data: error.message });
   }
 };
 
 const updateResponsiblePerson = async (req, res) => {
   try {
     const { id } = req.params;
-    const newPerson = req.body;
+    const updateResponsiblePerson = await updateResponsiblePersonFromDB(
+      id,
+      req.body,
+      ResponsiblePerson,
+    );
+    return res.status(200).json({ data: updateResponsiblePerson });
+  } catch (error) {
+    return res.status(500).json({ data: error.message });
+  }
+};
 
-    const updateResponsiblePerson = await updateResponsiblePersonFromDB(id, newPerson);
+const updatePetFromResponsiblePerson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateResponsiblePerson = await updatePetFromResponsiblePersonFromDB(
+      id,
+      req.body,
+      ResponsiblePerson,
+    );
 
     if (!updateResponsiblePerson) {
       return res.status(404).json({ data: "Id inválido! ❌" });
@@ -60,14 +79,18 @@ const updateResponsiblePerson = async (req, res) => {
 
     return res.status(200).json({ data: updateResponsiblePerson });
   } catch (error) {
-    return res.status(500).json({ error: "Error interno del servidor" });
+    return res.status(500).json({ data: error.message });
   }
 };
 
 const deleteResponsiblePerson = async (req, res) => {
-  const { id } = req.params;
-  deleteResponsiblePersonByIdFromDB(id);
-  res.status(200).json({ data: "Eliminado correctamente! 😼" });
+  try {
+    const { id } = req.params;
+    deleteResponsiblePersonByIdFromDB(id, ResponsiblePerson);
+    return res.status(200).json({ data: "Eliminado correctamente! 😼" });
+  } catch (error) {
+    return res.status(500).json({ data: error.message });
+  }
 };
 
 module.exports = {
@@ -76,5 +99,6 @@ module.exports = {
   getResponsiblePersonById,
   createNewResponsiblePerson,
   updateResponsiblePerson,
+  updatePetFromResponsiblePerson,
   deleteResponsiblePerson,
 };

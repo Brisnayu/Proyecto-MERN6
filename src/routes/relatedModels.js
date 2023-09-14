@@ -1,61 +1,36 @@
 const express = require("express");
-const Kitten = require("../models/kitten");
-const Puppy = require("../models/puppy");
+
+const {
+  getAllInformationResponsiblePerson,
+  getAllInformationKitten,
+  getAllInformationPuppy,
+  // updatePuppyAndKittenByIdFromResponsiblePerson,
+  getAllInformationPersonsAndPets,
+} = require("../controllers/relatedModels");
 const ResponsiblePerson = require("../models/responsiblePerson");
 
 const relatedModelsRouters = express.Router();
 
-relatedModelsRouters.get("/responsiblePerson/:id", async (req, res) => {
+relatedModelsRouters.get("/responsibleperson", getAllInformationPersonsAndPets);
+relatedModelsRouters.get("/responsibleperson/:id", getAllInformationResponsiblePerson);
+relatedModelsRouters.get("/kitten/:id", getAllInformationKitten);
+relatedModelsRouters.get("/puppy/:id", getAllInformationPuppy);
+relatedModelsRouters.delete("/responsiblePerson/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const person = await ResponsiblePerson.findById(id)
-      .populate("pets.puppies")
-      .populate("pets.kittens");
+    const puppyIdToRemove = req.body.pets.puppies;
 
-    return res.status(200).json(person);
+    const update = {
+      $pull: {
+        "pets.puppies": puppyIdToRemove,
+      },
+    };
+
+    const result = await ResponsiblePerson.findByIdAndUpdate(id, update, { new: true });
+    res.status(200).json({ data: result });
   } catch (error) {
-    return res.status(400).json("error", error);
+    res.status(500).json({ data: error.message });
   }
-});
-
-relatedModelsRouters.get("/kitten/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const kitten = await Kitten.findById(id).populate({
-      path: "responsiblePerson",
-      select: "name surname avatar age",
-    });
-    return res.status(200).json({ data: kitten });
-  } catch (error) {
-    return res.status(400).json("error", error);
-  }
-});
-
-relatedModelsRouters.get("/puppy/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const puppy = await Puppy.findById(id).populate({
-      path: "responsiblePerson",
-      select: "name surname avatar age",
-    });
-    return res.status(200).json(puppy);
-  } catch (error) {
-    return res.status(400).json("error", error);
-  }
-});
-
-relatedModelsRouters.put("/kitten/:id", async (req, res) => {
-  const { id } = req.params;
-
-  const kitten = await Kitten.findByIdAndUpdate(id, req.body, { new: true });
-  return res.status(200).json({ data: kitten });
-});
-
-relatedModelsRouters.put("/puppy/:id", async (req, res) => {
-  const { id } = req.params;
-
-  const kitten = await Puppy.findByIdAndUpdate(id, req.body, { new: true });
-  return res.status(200).json({ data: kitten });
 });
 
 module.exports = relatedModelsRouters;
