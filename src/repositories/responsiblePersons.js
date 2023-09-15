@@ -25,17 +25,10 @@ const updateResponsiblePersonFromDB = async (id, payload, Model) => {
 const updatePetFromResponsiblePersonFromDB = async (id, payload, Model) => {
   const update = {};
 
-  if (payload.pets.puppies) {
-    update.$addToSet = {
-      "pets.puppies": { $each: payload.pets.puppies },
-    };
-  }
-
-  if (payload.pets.kittens) {
-    update.$addToSet = {
-      "pets.kittens": { $each: payload.pets.kittens },
-    };
-  }
+  update.$addToSet = {
+    "pets.puppies": { $each: payload.pets.puppies || [] },
+    "pets.kittens": { $each: payload.pets.kittens || [] },
+  };
 
   const responsiblePerson = await Model.findByIdAndUpdate(id, update, { new: true });
   return responsiblePerson;

@@ -51,13 +51,22 @@ const getAllInformationPuppy = async (req, res) => {
   }
 };
 
-const updatePuppyAndKittenByIdFromResponsiblePerson = async (req, res) => {
+const updatePetByIdFromResponsiblePerson = async (req, res) => {
   try {
     const { id } = req.params;
-    const person = await removePetFromDB(id, req.body, ResponsiblePerson);
-    return res.status(200).json({ data: person });
+    const { puppyIdToRemove, kittenIdToRemove } = req.body;
+
+    const update = {
+      $pull: {
+        "pets.puppies": puppyIdToRemove,
+        "pets.kittens": kittenIdToRemove,
+      },
+    };
+
+    const person = await removePetFromDB(id, update, ResponsiblePerson);
+    res.status(200).json({ data: person });
   } catch (error) {
-    return res.status(500).json({ data: error.message });
+    res.status(500).json({ data: error.message });
   }
 };
 
@@ -66,5 +75,5 @@ module.exports = {
   getAllInformationResponsiblePerson,
   getAllInformationKitten,
   getAllInformationPuppy,
-  updatePuppyAndKittenByIdFromResponsiblePerson,
+  updatePetByIdFromResponsiblePerson,
 };

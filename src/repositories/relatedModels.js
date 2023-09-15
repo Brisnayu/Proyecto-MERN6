@@ -16,23 +16,7 @@ const getAllInformationPetFromDB = async (id, Model) => {
 };
 
 const removePetFromDB = async (id, payload, Model) => {
-  console.log(payload);
-  console.log(Model);
-  const update = {};
-
-  if (payload.pets.puppies) {
-    update.$pull = {
-      "pets.puppies": payload.pets.puppies,
-    };
-  }
-
-  if (payload.pets.kittens) {
-    update.$pull = {
-      "pets.kittens": payload.pets.kittens,
-    };
-  }
-
-  const person = await Model.findByIdAndUpdate(id, update, { new: true });
+  const person = Model.findByIdAndUpdate(id, payload, { new: true });
 
   return person;
 };
