@@ -43,7 +43,7 @@ const getResponsiblePersonById = async (req, res) => {
 const createNewResponsiblePerson = async (req, res) => {
   try {
     const newPerson = await createPersonInDB(req.body, ResponsiblePerson);
-    return res.status(200).json({ data: newPerson });
+    return res.status(201).json({ data: newPerson });
   } catch (error) {
     console.log("Lo siento! El nuevo cuidador no se ha creado correctamente 😿", error);
     return res.status(500).json({ data: error.message });
